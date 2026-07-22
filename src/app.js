@@ -2,7 +2,9 @@ const express = require("express");
 const routes = require("./routes");
 
 const app = express();
+const { swaggerUi, specs } = require("./docs/swagger");
 
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 app.use(express.json()); 
 
 app.get("/", (req, res) => {
@@ -18,7 +20,7 @@ app.get("/health", (req, res) => {
     status: "healthy",
   });
 });
-
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 app.use("/api", routes);
 
 module.exports = app;
