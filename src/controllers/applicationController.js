@@ -111,10 +111,74 @@ exports.createApplication = async (req, res) => {
   }
 };
 
+// PUT /applications/:id
 exports.updateApplication = async (req, res) => {
-  res.json({
-    message: "Update application",
+ if (!req.body || Object.keys(req.body).length === 0) {
+  return res.status(400).json({
+    success: false,
+    message: "Request body is required",
   });
+}
+  try {
+    const id = Number(req.params.id);
+
+    if (isNaN(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid application ID",
+      });
+    }
+
+    let {
+  company,
+  position,
+  location,
+  jobType,
+  salary,
+  status,
+  applicationUrl,
+  contactName,
+  contactEmail,
+  notes,
+  dateApplied,
+} = req.body;
+
+// if (status) {
+//   status = status.toUpperCase();
+// }
+console.log(req.body);
+    const application = await prisma.application.update({
+      where: { id },
+      data: {
+  company,
+  position,
+  location,
+  jobType,
+  salary,
+  status: status?.toUpperCase(),
+  applicationUrl,
+  contactName,
+  contactEmail,
+  notes,
+  dateApplied: dateApplied ? new Date(dateApplied) : undefined,
+},
+    });
+    console.log("about to update:",{id, company, status, dateApplied});
+    console.log("update sucessful");
+
+    return res.status(200).json({
+      success: true,
+      message: "Application updated successfully",
+      data: application,
+    });
+  } catch (error) {
+    console.log("update failed");
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update application",
+      error: error.message,
+    });
+  }
 };
 
 exports.deleteApplication = async (req, res) => {
