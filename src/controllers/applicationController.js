@@ -182,7 +182,33 @@ console.log(req.body);
 };
 
 exports.deleteApplication = async (req, res) => {
-  res.json({
-    message: "Delete application",
-  });
+  try {
+    const id = Number(req.params.id);
+
+    const existing = await prisma.application.findUnique({
+      where: { id },
+    });
+
+    if (!existing) {
+      return res.status(404).json({
+        success: false,
+        message: "Application not found",
+      });
+    }
+
+    await prisma.application.delete({
+      where: { id },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Application deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete application",
+      error: error.message,
+    });
+  }
 };
