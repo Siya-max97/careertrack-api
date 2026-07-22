@@ -1,5 +1,8 @@
 # CareerTrack API
-
+![Node.js](https://img.shields.io/badge/Node.js-20.x-green)
+![Express](https://img.shields.io/badge/Express-5.x-black)
+![License](https://img.shields.io/badge/License-MIT-blue)
+![Version](https://img.shields.io/badge/Version-v1.0.0-orange)
 ## Features
 
 - CRUD Job Applications
