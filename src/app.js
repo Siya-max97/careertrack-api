@@ -1,22 +1,24 @@
 const express = require("express");
+const routes = require("./routes");
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json()); 
 
 app.get("/", (req, res) => {
-  res.status(200).json({
+  res.json({
     success: true,
     message: "Welcome to CareerTrack API",
-    version: "1.0.0"
+    version: "1.0.0",
   });
 });
 
 app.get("/health", (req, res) => {
-  res.status(200).json({
-    status: "healthy"
+  res.json({
+    status: "healthy",
   });
 });
 
-app.use("/api", require("./routes")); 
+app.use("/api", routes);
+
 module.exports = app;
